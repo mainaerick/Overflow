@@ -10,7 +10,7 @@ import lombok.Data;
 public class UserResponseDTO {
 
   @ApiModelProperty(position = 0)
-  private Integer id;
+  private Long id;
   @ApiModelProperty(position = 1)
   private String username;
   @ApiModelProperty(position = 2)

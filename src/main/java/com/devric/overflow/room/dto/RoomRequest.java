@@ -1,4 +1,4 @@
-package com.devric.overflow.room;
+package com.devric.overflow.room.dto;
 
 import com.devric.overflow.core.auth.appuser.AppUser;
 import lombok.Getter;

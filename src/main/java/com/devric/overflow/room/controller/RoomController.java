@@ -1,6 +1,6 @@
 package com.devric.overflow.room.controller;
 
-import com.devric.overflow.room.RoomRequest;
+import com.devric.overflow.room.dto.RoomRequest;
 import com.devric.overflow.room.dto.RoomResponseDTO;
 import com.devric.overflow.room.service.RoomService;
 import com.devric.overflow.room.entity.Room;

@@ -23,8 +23,8 @@ public class Room {
 
     @Id
     @SequenceGenerator(
-            name = "customer_id_sequence",
-            sequenceName = "customer_id_sequence"
+            name = "room_id_sequence",
+            sequenceName = "room_id_sequence"
     )
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -44,8 +44,7 @@ public class Room {
             joinColumns =  @JoinColumn(name = "room_id") ,
             inverseJoinColumns = @JoinColumn(name = "appuser_id"))
     public Set<AppUser> participants = new HashSet<>();
-//    @OneToMany
-//   public Set<AppUser> participants = new HashSet<>();
+
     @UpdateTimestamp
     private Instant updated;
     @UpdateTimestamp

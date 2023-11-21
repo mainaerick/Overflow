@@ -1,11 +1,15 @@
 package com.devric.overflow.core.auth.appuser;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class UserRoomResponseDTO
+@Builder
+public class UserAuth
 {
     @ApiModelProperty(position = 0)
-    private Integer id;
+    private Long id;
+    private String username;
+    private String email;
 }

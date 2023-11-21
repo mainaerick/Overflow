@@ -1,12 +1,9 @@
 package com.devric.overflow.room.dto;
 
-import com.devric.overflow.core.auth.appuser.AppUser;
-import com.devric.overflow.core.auth.appuser.UserResponseDTO;
-import com.devric.overflow.core.auth.appuser.UserRoomResponseDTO;
+import com.devric.overflow.core.auth.appuser.UserAuth;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -22,6 +19,6 @@ public class RoomResponseDTO {
     @ApiModelProperty(position = 4)
     private String description;
     @ApiModelProperty(position = 5)
-    private Set<UserRoomResponseDTO> participants;
+    private Set<UserAuth> participants;
 }
 

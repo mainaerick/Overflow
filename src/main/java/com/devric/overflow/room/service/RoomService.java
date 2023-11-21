@@ -3,7 +3,7 @@ package com.devric.overflow.room.service;
 import com.devric.overflow.core.auth.appuser.AppUser;
 import com.devric.overflow.core.auth.appuser.UserRepository;
 import com.devric.overflow.exception_handler.PropertyNotFound;
-import com.devric.overflow.room.RoomRequest;
+import com.devric.overflow.room.dto.RoomRequest;
 import com.devric.overflow.room.entity.Room;
 import com.devric.overflow.room.repository.RoomRepository;
 import lombok.AllArgsConstructor;
@@ -35,7 +35,7 @@ public class RoomService {
         roomRepository.saveAndFlush(room);
     }
 
-    Room addUserToRoom(Long roomId,Long userId){
+    public Room addUserToRoom(Long roomId,Long userId){
         Set<AppUser> appUserSet =new HashSet<>();
         Room room = roomRepository.findById(roomId).get();
         AppUser appUser = userRepository.findById(userId).get();
