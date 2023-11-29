@@ -3,7 +3,6 @@ package com.devric.overflow.message.service;
 import com.devric.overflow.core.auth.appuser.AppUser;
 import com.devric.overflow.core.auth.appuser.UserAuth;
 import com.devric.overflow.core.auth.appuser.UserRepository;
-import com.devric.overflow.core.auth.appuser.UserResponseDTO;
 import com.devric.overflow.message.dto.MessageRequest;
 import com.devric.overflow.message.dto.MessageResponseDTO;
 import com.devric.overflow.message.entity.Message;
@@ -12,7 +11,6 @@ import com.devric.overflow.room.entity.Room;
 import com.devric.overflow.room.repository.RoomRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Log4j2
@@ -37,12 +35,12 @@ public class MessageService {
                 .host(appUser)
                 .room(room)
                 .build());
-
-       return convertComment(userAuth,message);
+       return convertMessage(userAuth,message);
     }
 
 
-    private MessageResponseDTO convertComment(UserAuth userAuth, Message message) {
+
+    private MessageResponseDTO convertMessage(UserAuth userAuth, Message message) {
 
 //        ProfileResponse profile = profileService.getProfile(userAuth, userAuth.getUsername());
         return MessageResponseDTO.builder()

@@ -50,4 +50,23 @@ public class Room {
     @UpdateTimestamp
     private  Instant created;
 
+
+    public void changeName(String name){
+        this.name = name;
+
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
+    }
+
+    public void changeHost(String host) {
+        this.host = host;
+    }
+
+    public void changeTopic(String topic) {
+        this.topic = topic;
+    }
+
+
 }
