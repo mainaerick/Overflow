@@ -45,9 +45,10 @@ public class AppUser implements UserDetails {
   @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
   public Set<Room> rooms = new HashSet<>();
 
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return appUserRoles;
   }
 
   @Override

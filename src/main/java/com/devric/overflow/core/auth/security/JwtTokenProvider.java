@@ -66,11 +66,13 @@ public class JwtTokenProvider {
 
   public Authentication getAuthentication(String token) {
     UserDetails userDetails = myUserDetails.loadUserByUsername(getUsername(token));
+
     AppUser appUser = (AppUser) userDetails;
 
     UserAuth authenticatedUser = UserAuth.builder()
             .username(appUser.getUsername())
             .email(appUser.getEmail())
+            .appUserRoles(appUser.getAppUserRoles())
             .id(appUser.getId()).build();
 
     return new UsernamePasswordAuthenticationToken(authenticatedUser, "", userDetails.getAuthorities());

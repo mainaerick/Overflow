@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class UserAuth
@@ -12,4 +14,5 @@ public class UserAuth
     private Long id;
     private String username;
     private String email;
+    private List<AppUserRole> appUserRoles;
 }
