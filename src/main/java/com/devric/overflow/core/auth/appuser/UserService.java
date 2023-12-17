@@ -25,13 +25,14 @@ public class UserService {
   private final AuthenticationManager authenticationManager;
 
   public String signin(String username, String password) {
-
+//    log.error(String.valueOf(authenticationManager.authenticate
+//            (new UsernamePasswordAuthenticationToken(username, password))));
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
       return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getAppUserRoles());
     } catch (AuthenticationException e) {
       log.error(e.toString());
-      throw new CustomException(e.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+      throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
