@@ -62,7 +62,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <!-- Make method based security testing easier -->
+            <!-- Makefile method based security testing easier -->
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
