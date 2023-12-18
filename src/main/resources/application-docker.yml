@@ -1,0 +1,40 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: overflow
+  datasource:
+    password: 1234
+    url: jdbc:postgresql://postgres:5432/overflow
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 573eb2e4b5d6ae
+    password: cc3e1f8a6c56b5
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+security:
+  jwt:
+    token:
+      secret-key: secret-key
+      expire-length: 300000000 # 5 minutes
