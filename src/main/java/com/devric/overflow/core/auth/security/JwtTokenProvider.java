@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import com.devric.overflow.core.auth.appuser.AppUser;
 import com.devric.overflow.core.auth.appuser.AppUserRole;
+import com.devric.overflow.core.auth.appuser.UserAuth;
 import com.devric.overflow.exception_handler.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +41,7 @@ public class JwtTokenProvider {
   private long validityInMilliseconds = 3600000; // 1h
 
   @Autowired
-  private MyUserDetails myUserDetails;
+  private UserServiceDetail myUserDetails;
 
   @PostConstruct
   protected void init() {
@@ -64,7 +66,16 @@ public class JwtTokenProvider {
 
   public Authentication getAuthentication(String token) {
     UserDetails userDetails = myUserDetails.loadUserByUsername(getUsername(token));
-    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+    AppUser appUser = (AppUser) userDetails;
+
+    UserAuth authenticatedUser = UserAuth.builder()
+            .username(appUser.getUsername())
+            .email(appUser.getEmail())
+            .appUserRoles(appUser.getAppUserRoles())
+            .id(appUser.getId()).build();
+
+    return new UsernamePasswordAuthenticationToken(authenticatedUser, "", userDetails.getAuthorities());
   }
 
   public String getUsername(String token) {

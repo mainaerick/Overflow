@@ -80,4 +80,5 @@ public class SwaggerConfig {
     return Arrays.asList(new SecurityReference("Authorization", authorizationScopes));
   }
 
+
 }

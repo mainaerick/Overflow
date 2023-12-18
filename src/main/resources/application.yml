@@ -4,6 +4,9 @@ server:
     include-binding-errors: always
   port: 8080
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   application:
     name: customer
   datasource:
