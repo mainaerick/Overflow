@@ -1,12 +1,12 @@
 import axios from "axios";
 import { UserModel } from "../models/UserModel";
-import { APIURL } from "../../../setup/config";
+import { APIURLUSER } from "../../../setup/config";
 
-const API_URL = APIURL;
+const API_URL = APIURLUSER;
 // const API_URL_Authorized = "https://oak-be-zxxiqnr3eq-an.a.run.app/v1/account";
 
 
-export const GET_USER_BY_ACCESSTOKEN_URL = `${APIURL}/users/me`;
+export const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/users/me`;
 export const LOGIN_URL = `${API_URL}/users/signin`;
 export const REGISTER_URL = `${API_URL}/users/signup`;
 export const REQUEST_PASSWORD_URL = `${API_URL}/forgot_password`;

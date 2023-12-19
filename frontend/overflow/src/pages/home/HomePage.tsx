@@ -42,8 +42,7 @@ const HomePage = (props: Props) => {
           <h2>Study Rooms</h2>
           <p>{3} Rooms available</p>
         </div>
-
-        <a className="btn btn--main" href="{% url 'create-room' %}">
+        <a className="btn btn--main" href="createroom">
           <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
             <title>add</title>
             <path

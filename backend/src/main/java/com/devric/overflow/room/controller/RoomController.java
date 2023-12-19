@@ -44,7 +44,6 @@ public class RoomController {
     @GetMapping("/{roomId}")
     public RoomResponseDTO getRoomById(@PathVariable long roomId) {
 //        return roomService.getRoombyId(roomId);
-        log.warn(modelMapper.map(roomService.getRoombyId(roomId), RoomResponseDTO.class).toString());
         return modelMapper.map(roomService.getRoombyId(roomId), RoomResponseDTO.class);
 
     }

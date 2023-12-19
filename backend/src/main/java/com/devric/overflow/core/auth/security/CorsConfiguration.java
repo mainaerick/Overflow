@@ -2,6 +2,7 @@ package com.devric.overflow.core.auth.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,7 +14,11 @@ public class CorsConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**"); // Enable CORS for the whole application.
+
+                registry.addMapping("/**")
+                                .allowedMethods("GET", "POST", "PUT", "DELETE")
+
+                ; // Enable CORS for the whole application.
             }
         };
     }

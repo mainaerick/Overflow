@@ -18,5 +18,5 @@ public class UserResponseDTO {
   @ApiModelProperty(position = 2)
   private String email;
   @ApiModelProperty(position = 4)
-  List<RoomUserResponseDTO> rooms;
+  private List<RoomUserResponseDTO> rooms;
 }

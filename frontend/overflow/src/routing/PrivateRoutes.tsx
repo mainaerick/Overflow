@@ -1,7 +1,7 @@
 import { lazy, FC, Suspense } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
-import LoginForm from '../features/auth/components/Login2'
 import HomePage from '../pages/home/HomePage'
+import RoomForm from '../pages/room/RoomForm'
 // import { getCSSVariableValue } from "../../_metronic/assets/ts/_utils";
 
 const PrivateRoutes = () => {
@@ -11,6 +11,8 @@ const PrivateRoutes = () => {
         <Route path='auth/*' element={<Navigate to='/home' />} />
         {/* Pages */}
         <Route path="home" element={<HomePage />} />
+        <Route path="createroom" element={<RoomForm />} />
+        <Route path="createroom/:roomid" element={<RoomForm />} />
         {/* Page Not Found */}
         <Route path='*' element={<Navigate to='/error/404' />} />
     </Routes>
