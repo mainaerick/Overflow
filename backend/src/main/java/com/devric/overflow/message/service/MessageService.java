@@ -3,6 +3,8 @@ package com.devric.overflow.message.service;
 import com.devric.overflow.core.auth.appuser.AppUser;
 import com.devric.overflow.core.auth.appuser.UserAuth;
 import com.devric.overflow.core.auth.appuser.UserRepository;
+import com.devric.overflow.exception_handler.PropertyNotFound;
+import com.devric.overflow.message.dto.MessageDTO;
 import com.devric.overflow.message.dto.MessageRequest;
 import com.devric.overflow.message.dto.MessageResponseDTO;
 import com.devric.overflow.message.entity.Message;
@@ -13,6 +15,12 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Log4j2
 @Service
 @AllArgsConstructor
@@ -21,24 +29,43 @@ public class MessageService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     public MessageResponseDTO addMessage(MessageRequest messageRequest,Long roomId, UserAuth userAuth) {
-
         Room room = roomRepository.findById(roomId).get();
+        Set<AppUser> appUserSet =room.getParticipants();
         AppUser appUser = userRepository.findById(userAuth.getId()).get();
-//        Message message = Message.builder()
-//                .body(messageRequest.getBody())
-//                .host(appUser)
-//                .room(room)
-//                .build();
-//        log.info(message);
+
+//        add sender as participant if not available
+
+        if (appUser ==null){
+            throw new PropertyNotFound("User not found");
+        }
+        appUserSet.add(appUser);
+
+        room.setParticipants(appUserSet);
+
+
         Message message = messageRepository.saveAndFlush(Message.builder()
                 .body(messageRequest.getBody())
                 .host(appUser)
                 .room(room)
                 .build());
+        if(room.getParticipants().contains(appUserSet)){
+            log.warn("Participant is available");
+        }
+        else {
+            roomRepository.save(room);
+
+        }
+
        return convertMessage(userAuth,message);
     }
 
+    public List<MessageResponseDTO> getMessagesbyRoomId(long roomId){
+        List<Message> messages = messageRepository.findMessagesByRoomId(roomId);
 
+        return messages.stream()
+                .map(this::convertAllMessage)
+                .collect(Collectors.toList());
+    }
 
     private MessageResponseDTO convertMessage(UserAuth userAuth, Message message) {
 
@@ -47,8 +74,20 @@ public class MessageService {
                 .id(message.getId())
                 .created(message.getCreated())
                 .updated(message.getUpdated())
-                .room(MessageResponseDTO.Room.builder().name(message.getRoom().getName()).build())
+                .room(MessageResponseDTO.Room.builder().name(message.getRoom().getName()).id(message.getRoom().getId()).build())
                 .body(message.getBody())
                 .host(MessageResponseDTO.AppUser.builder().username(userAuth.getUsername()).build()).build();
     }
+    private MessageResponseDTO convertAllMessage( Message message) {
+
+//        ProfileResponse profile = profileService.getProfile(userAuth, userAuth.getUsername());
+        return MessageResponseDTO.builder()
+                .id(message.getId())
+                .created(message.getCreated())
+                .updated(message.getUpdated())
+                .room(MessageResponseDTO.Room.builder().name(message.getRoom().getName()).id(message.getRoom().getId()).build())
+                .body(message.getBody())
+                .host(MessageResponseDTO.AppUser.builder().username(message.getHost().getUsername()).build()).build();
+    }
+
 }

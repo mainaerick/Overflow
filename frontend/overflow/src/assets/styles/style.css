@@ -1107,7 +1107,7 @@ a {
   background: transparent;
 }
 
-.room__message > form > input {
+.room__message  .room_message_input {
   resize: none;
   background-color: var(--color-dark-light);
   color: var(--color-light);
@@ -1121,9 +1121,12 @@ a {
   font-size: 1.4rem;
   font-weight: 500;
   position: relative;
-}
 
-.room__message > form > input::placeholder {
+}
+.room__messageitem {
+  margin: 0;
+}
+.room_message_input {
   color: var(--color-light-gray);
 }
 

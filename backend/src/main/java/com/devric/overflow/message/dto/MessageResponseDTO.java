@@ -30,11 +30,13 @@ public class MessageResponseDTO {
     @Builder
     @Getter
     public static class AppUser{
+        private Long id;
         private String username;
     }
     @Builder
     @Getter
     public static class Room{
+        private Long id;
         private String name;
     }
 }

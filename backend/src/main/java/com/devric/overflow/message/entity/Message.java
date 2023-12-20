@@ -28,6 +28,7 @@ public class Message {
 
     @ManyToOne
     private AppUser host;
+
     @ManyToOne
     private Room room;
     private String body;
@@ -36,5 +37,6 @@ public class Message {
     private Instant updated;
     @UpdateTimestamp
     private  Instant created;
+
 
 }

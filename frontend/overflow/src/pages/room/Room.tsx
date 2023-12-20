@@ -1,8 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { RoomModel } from "./models/RoomModel";
+import {
+  roomdelete,
+  roomgetone,
+  roommessage,
+  roommessagetall,
+} from "./RoomCrud";
+import { useParams } from "react-router";
+import { TimeAgo } from "./utils/TimeAgo";
+import { UserModel } from "../../features/auth/models/UserModel";
+import { MessageModel } from "./models/MessageModel";
+import { Form, Input } from "antd";
 
 type Props = {};
 
 const Room = (props: Props) => {
+  const [room, setRoom] = useState<RoomModel>();
+  const [messages, setMessages] = useState<MessageModel[]>([]);
+  const [loadings, setLoadings] = useState<boolean>(false);
+  const [form] = Form.useForm();
+
+  const params = useParams();
+  useEffect(() => {
+    roomgetone(params.roomid)
+      .then((response) => {
+        setRoom(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    roommessagetall(params.roomid)
+      .then((response) => {
+        setMessages(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [room]);
+
+  const deleteroom = () => {
+    roomdelete(params.roomid)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  // Add message form
+  const onFinish = (values: MessageModel) => {
+    console.log("Received values of form: ", values);
+
+    setLoadings(true);
+
+    setTimeout(() => {
+      roommessage(params.roomid, values.body)
+        .then((response) => {
+          const newMessage: MessageModel = response.data;
+
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+          form.resetFields();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }, 1000);
+  };
   return (
     <main className="profile-page layout layout--2">
       <div className="container">
@@ -10,7 +77,7 @@ const Room = (props: Props) => {
         <div className="room">
           <div className="room__top">
             <div className="room__topLeft">
-              <a href="{% url 'home' %}">
+              <a href="/home">
                 <svg
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +93,7 @@ const Room = (props: Props) => {
             </div>
             {/* {% if room.host == request.user %} */}
             <div className="room__topRight">
-              <a href="{% url 'update-room' room.id %}">
+              <a href={`/createroom/${room?.id}`}>
                 <svg
                   enable-background="new 0 0 24 24"
                   height="32"
@@ -48,7 +115,7 @@ const Room = (props: Props) => {
                   </g>
                 </svg>
               </a>
-              <a href="{% url 'delete-room' room.id %}">
+              <span onClick={(e: any) => deleteroom()}>
                 <svg
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"
@@ -59,15 +126,15 @@ const Room = (props: Props) => {
                   <title>remove</title>
                   <path d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path>
                 </svg>
-              </a>
+              </span>
             </div>
             {/* {% endif %} */}
           </div>
           <div className="room__box scroll">
             <div className="room__header scroll">
               <div className="room__info">
-                <h3>{"{room.name}"}</h3>
-                <span>{"3"} ago</span>
+                <h3>{room?.name}</h3>
+                <span>{TimeAgo(room?.created)}</span>
               </div>
               <div className="room__hosted">
                 <p>Hosted By</p>
@@ -78,61 +145,85 @@ const Room = (props: Props) => {
                   <div className="avatar avatar--small">
                     <img src="{{room.host.avatar.url}}" />
                   </div>
-                  <span>@{"eric"}</span>
+                  <span>@{room?.host}</span>
                 </a>
               </div>
 
-              <span className="room__topics">{"{room.topic}"}</span>
+              <span className="room__topics">{room?.topic}</span>
             </div>
 
             <div className="room__conversation">
               <div className="threads scroll">
                 {/* {% for message in room_messages %} */}
-                <div className="thread">
-                  <div className="thread__top">
-                    <div className="thread__author">
-                      <a
-                        href="{% url 'user-profile' message.user.id %}"
-                        className="thread__authorInfo"
-                      >
-                        <div className="avatar avatar--small">
-                          <img src="{{message.user.avatar.url}}" />
-                        </div>
-                        <span>@{"{message.user.username}"}</span>
-                      </a>
-                      <span className="thread__date">
-                        {"{message.created|timesince}"} ago
-                      </span>
-                    </div>
 
-                    {/* {% if request.user == message.user %} */}
-                    <a href="{% url 'delete-message' message.id %}">
-                      <div className="thread__delete">
-                        <svg
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="32"
-                          height="32"
-                          viewBox="0 0 32 32"
-                        >
-                          <title>remove</title>
-                          <path d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path>
-                        </svg>
+                {messages &&
+                  messages.map((message: MessageModel, key) => {
+                    return (
+                      <div className="thread" key={key}>
+                        <div className="thread__top">
+                          <div className="thread__author">
+                            <a
+                              href="{% url 'user-profile' message.user.id %}"
+                              className="thread__authorInfo"
+                            >
+                              <div className="avatar avatar--small">
+                                <img src="{{message.user.avatar.url}}" />
+                              </div>
+                              <span>@{message.host.username}</span>
+                            </a>
+                            <span className="thread__date">
+                              {TimeAgo(message.created)}
+                            </span>
+                          </div>
+
+                          {/* {% if request.user == message.user %} */}
+                          <a href="{% url 'delete-message' message.id %}">
+                            <div className="thread__delete">
+                              <svg
+                                version="1.1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                              >
+                                <title>remove</title>
+                                <path d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"></path>
+                              </svg>
+                            </div>
+                          </a>
+                          {/* {% endif %} */}
+                        </div>
+                        <div className="thread__details">{message.body}</div>
                       </div>
-                    </a>
-                    {/* {% endif %} */}
-                  </div>
-                  <div className="thread__details">{"{message.body}"}</div>
-                </div>
+                    );
+                  })}
+
                 {/* {% endfor %} */}
               </div>
             </div>
           </div>
           <div className="room__message">
-            <form action="" method="POST">
+            <Form form={form} onFinish={onFinish} className="room__messageform">
               {/* {% csrf_token %} */}
-              <input name="body" placeholder="Write your message here..." />
-            </form>
+              <Form.Item
+                name="body"
+                className="room__messageitem"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input a message!",
+                  },
+                ]}
+              >
+                <Input
+                  className="room_message_input"
+                  id="room_topic"
+                  list="topic"
+                  placeholder="Write your message here..."
+                />
+              </Form.Item>
+              {/* <input name="body" placeholder="Write your message here..." /> */}
+            </Form>
           </div>
         </div>
         {/* <!-- Room End --> */}
@@ -140,19 +231,28 @@ const Room = (props: Props) => {
         {/* <!--   Start --> */}
         <div className="participants">
           <h3 className="participants__top">
-            Participants <span>({"{participants.count}"} Joined)</span>
+            Participants <span>({room?.participants.length} Joined)</span>
           </h3>
           <div className="participants__list scroll">
             {/* {% for user in participants %} */}
-            <a href="{%  url 'user-profile' user.id %}" className="participant">
-              <div className="avatar avatar--medium">
-                <img src="{{user.avatar.url}}" />
-              </div>
-              <p>
-                {"{user.name}"}
-                <span>@{"{user.username}"}</span>
-              </p>
-            </a>
+            {room?.participants.map((participant: UserModel, key) => {
+              return (
+                <a
+                  key={key}
+                  href="{%  url 'user-profile' user.id %}"
+                  className="participant"
+                >
+                  <div className="avatar avatar--medium">
+                    <img src="{{user.avatar.url}}" />
+                  </div>
+                  <p>
+                    {participant.email}
+                    <span>@{participant.username}</span>
+                  </p>
+                </a>
+              );
+            })}
+
             {/* {% endfor %} */}
           </div>
         </div>

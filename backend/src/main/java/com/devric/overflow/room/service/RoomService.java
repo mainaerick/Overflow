@@ -72,8 +72,9 @@ public class RoomService {
         return convertRoom(userAuth,room);
     }
     public Room addUserToRoom(Long roomId,Long userId){
-        Set<AppUser> appUserSet =new HashSet<>();
         Room room = roomRepository.findById(roomId).get();
+        Set<AppUser> appUserSet =room.getParticipants();
+
         AppUser appUser = userRepository.findById(userId).get();
         if (room == null){
             throw new PropertyNotFound("Room not found");
@@ -115,7 +116,6 @@ public class RoomService {
             log.error(e.toString());
             throw new CustomException(e.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-
 
 
 
