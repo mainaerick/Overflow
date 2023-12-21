@@ -105,8 +105,11 @@ public class RoomService {
 
     public void deleteRoom(UserAuth userAuth, Long id) {
         Room room = roomRepository.findById(id).get();
+        log.warn("auth details---->"+room.getHost()+"--"+userAuth.getUsername());
         try{
             if (room.getHost().equals(userAuth.getUsername())) {
+                room.getParticipants().clear();
+//                room.getMessages().clear();
                 roomRepository.delete(room);
             }
             else {

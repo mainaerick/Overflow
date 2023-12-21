@@ -1,6 +1,7 @@
 package com.devric.overflow.room.entity;
 
 import com.devric.overflow.core.auth.appuser.AppUser;
+import com.devric.overflow.message.entity.Message;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -45,6 +46,9 @@ public class Room {
             inverseJoinColumns = @JoinColumn(name = "appuser_id"))
     public Set<AppUser> participants = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
+    private Set<Message> messages = new HashSet<>();
     @UpdateTimestamp
     private Instant updated;
     @UpdateTimestamp

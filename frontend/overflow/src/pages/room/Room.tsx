@@ -6,7 +6,7 @@ import {
   roommessage,
   roommessagetall,
 } from "./RoomCrud";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { TimeAgo } from "./utils/TimeAgo";
 import { UserModel } from "../../features/auth/models/UserModel";
 import { MessageModel } from "./models/MessageModel";
@@ -21,6 +21,8 @@ const Room = (props: Props) => {
   const [form] = Form.useForm();
 
   const params = useParams();
+  const navigate = useNavigate();
+
   useEffect(() => {
     roomgetone(params.roomid)
       .then((response) => {
@@ -45,6 +47,7 @@ const Room = (props: Props) => {
     roomdelete(params.roomid)
       .then((response) => {
         console.log(response);
+        navigate("/home")
       })
       .catch((e) => {
         console.log(e);
