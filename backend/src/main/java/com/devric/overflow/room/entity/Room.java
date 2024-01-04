@@ -2,6 +2,7 @@ package com.devric.overflow.room.entity;
 
 import com.devric.overflow.core.auth.appuser.AppUser;
 import com.devric.overflow.message.entity.Message;
+import com.devric.overflow.topic.entity.Topic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -31,10 +32,9 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
-
-
     private String host;
-    private String topic;
+    @ManyToOne
+    private Topic topic;
     private String name;
     private String description;
 
@@ -68,7 +68,7 @@ public class Room {
         this.host = host;
     }
 
-    public void changeTopic(String topic) {
+    public void changeTopic(Topic topic) {
         this.topic = topic;
     }
 

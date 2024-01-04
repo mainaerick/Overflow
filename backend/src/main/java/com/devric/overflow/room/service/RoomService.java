@@ -12,6 +12,9 @@ import com.devric.overflow.room.dto.RoomResponseDTO;
 import com.devric.overflow.room.dto.RoomUpdateRequest;
 import com.devric.overflow.room.entity.Room;
 import com.devric.overflow.room.repository.RoomRepository;
+import com.devric.overflow.topic.entity.Topic;
+import com.devric.overflow.topic.repository.TopicRepository;
+import com.devric.overflow.topic.service.TopicService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.catalina.User;
@@ -33,7 +36,20 @@ public class RoomService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
+    private final TopicRepository topicRepository;
+
+    private final TopicService topicService;
     public void addRoom(UserAuth userAuth,RoomRequest request) {
+
+        if (request.getTopic().getName().isEmpty()){
+            throw new PropertyNotFound("Topic must be included");
+        }
+//        check if topic exist
+//        if it soesn't exist add topic to the databae
+        if (topicRepository.findTopicByName(request.getTopic().getName())==null){
+            throw new PropertyNotFound("Topic not found");
+
+        }
 
         Room room = Room.builder()
                 .name(request.getName())
