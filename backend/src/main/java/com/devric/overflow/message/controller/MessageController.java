@@ -22,9 +22,14 @@ import java.util.List;
 public class MessageController {
     private final ModelMapper modelMapper;
     private final MessageService messageService;
+
     @PutMapping("/room/{roomId}")
     MessageResponseDTO addMessageToRoom(@PathVariable Long roomId, @RequestBody MessageRequest messageRequest,@AuthenticationPrincipal UserAuth userAuth) {
         return messageService.addMessage(messageRequest,roomId,userAuth);
+    }
+    @GetMapping("/all")
+    List<MessageResponseDTO> getMessagesInRoom(@AuthenticationPrincipal UserAuth userAuth) {
+        return messageService.getMessagesAll(userAuth);
     }
     @GetMapping("/room/{roomId}")
     List<MessageResponseDTO> getMessagesInRoom(@PathVariable Long roomId) {

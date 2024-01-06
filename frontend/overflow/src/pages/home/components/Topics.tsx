@@ -35,11 +35,10 @@ const Topics = (props: Props) => {
             All <span>{topics?.length}</span>
           </a>
         </li>
-        {/* {% for topic in topics %} */}
         {topics &&
-          topics.map((topic) => {
+          topics.map((topic,key) => {
             return (
-              <li>
+              <li key={key}>
                 <a href="{% url 'home' %}?q={{topic.name}}">
                   {topic.name}
                   <span>{topic.roomcount}</span>
@@ -48,7 +47,6 @@ const Topics = (props: Props) => {
             );
           })}
 
-        {/* {% endfor %} */}
       </ul>
       <a className="btn btn--link" href="{% url 'topics' %}">
         More

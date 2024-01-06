@@ -9,6 +9,7 @@ export const TOPIC_GET_ONE = `${API_URL}/topic`;
 export const TOPIC_ADD = `${API_URL}/topic`;
 export const TOPIC_UPDATE = `${API_URL}/topic/update`;
 export const TOPIC_DELETE = `${API_URL}/topic/delete`;
+export const MESSAGE_GET_ALL = `${API_URL}/message/all`;
 
 export function topicadd(name: string) {
   return axios.post(TOPIC_ADD, {
@@ -34,3 +35,8 @@ export function topicupdate(
     name,
   });
 }
+// Messages section
+// get all messages
+export function messagegetall() {
+    return axios.get(MESSAGE_GET_ALL);
+  }

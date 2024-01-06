@@ -46,8 +46,6 @@ public class MessageService {
                 .host(appUser)
                 .room(room)
                 .build());
-        log.warn(message.getHost().getId());
-        ;
         if (room.getParticipants().contains(appUserSet)) {
             log.warn("Participant is available");
         } else {
@@ -61,6 +59,12 @@ public class MessageService {
     public List<MessageResponseDTO> getMessagesbyRoomId(long roomId) {
         List<Message> messages = messageRepository.findMessagesByRoomId(roomId);
 
+        return messages.stream()
+                .map(this::convertAllMessage)
+                .collect(Collectors.toList());
+    }
+    public List<MessageResponseDTO> getMessagesAll(UserAuth userAuth) {
+        List<Message> messages = messageRepository.findAll();
         return messages.stream()
                 .map(this::convertAllMessage)
                 .collect(Collectors.toList());

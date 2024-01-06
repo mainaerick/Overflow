@@ -1,7 +1,16 @@
-export  interface MessageModel {
+export interface MessageModel {
+  id: number;
+  host: Host;
+  room: Room;
   body: string;
-  host: { id: number; username: string };
-  room:{id: number; name: string };
-  created:string;
-  updated:string;
+  updated: string;
+  created: string;
+}
+interface Room {
+  id: number;
+  name: string;
+}
+interface Host {
+  id: number;
+  username: string;
 }
