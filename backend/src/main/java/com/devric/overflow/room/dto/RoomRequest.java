@@ -17,7 +17,7 @@ import java.util.Set;
 public class RoomRequest {
     private Long id;
     private String host;
-    private Topic topic;
+    private String topic;
     private String name;
     private String description;
     private Set<AppUser> participants;

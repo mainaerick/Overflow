@@ -17,4 +17,6 @@ public class TopicResponseDTO {
     private Instant updated;
     @ApiModelProperty(position = 3)
     private  Instant created;
+    @ApiModelProperty(position = 4)
+    private  int roomcount;
 }

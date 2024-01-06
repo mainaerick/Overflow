@@ -6,7 +6,7 @@ import { TimeAgo } from "../../room/utils/TimeAgo";
 type Props = {};
 
 const Feed = (props: Props) => {
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState<RoomModel[]>([]);
   useEffect(() => {
     roomgetall()
       .then((response) => {
@@ -24,7 +24,10 @@ const Feed = (props: Props) => {
       <div className="roomList__header">
         <div>
           <h2>Study Rooms</h2>
-          <p>{rooms.length==0?"No ": rooms.length} { rooms.length>1?" Rooms ":" Room "} available</p>
+          <p>
+            {rooms.length == 0 ? "No " : rooms.length}{" "}
+            {rooms.length > 1 ? " Rooms " : " Room "} available
+          </p>
         </div>
         <a className="btn btn--main" href="createroom">
           <svg
@@ -78,7 +81,7 @@ const Feed = (props: Props) => {
                   </svg>
                   {room?.participants.length} Joined
                 </a>
-                <p className="roomListRoom__topic">{room.topic}</p>
+                <p className="roomListRoom__topic">{room.topic.name}</p>
               </div>
             </div>
           );

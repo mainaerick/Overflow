@@ -10,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -34,6 +33,7 @@ public class Room {
     private Long id;
     private String host;
     @ManyToOne
+    @JoinColumn(name = "topic_name")
     private Topic topic;
     private String name;
     private String description;

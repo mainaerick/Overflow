@@ -12,6 +12,7 @@ import com.devric.overflow.room.dto.RoomResponseDTO;
 import com.devric.overflow.room.dto.RoomUpdateRequest;
 import com.devric.overflow.room.entity.Room;
 import com.devric.overflow.room.repository.RoomRepository;
+import com.devric.overflow.topic.dto.TopicResponseDTO;
 import com.devric.overflow.topic.entity.Topic;
 import com.devric.overflow.topic.repository.TopicRepository;
 import com.devric.overflow.topic.service.TopicService;
@@ -22,6 +23,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -34,27 +36,24 @@ import java.util.stream.Stream;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
     private final TopicRepository topicRepository;
 
-    private final TopicService topicService;
+    private final  TopicService topicService;
     public void addRoom(UserAuth userAuth,RoomRequest request) {
 
-        if (request.getTopic().getName().isEmpty()){
+        // Validate that the topic is provided in the request
+        if (StringUtils.isEmpty(request.getTopic())) {
             throw new PropertyNotFound("Topic must be included");
         }
-//        check if topic exist
-//        if it soesn't exist add topic to the databae
-        if (topicRepository.findTopicByName(request.getTopic().getName())==null){
-            throw new PropertyNotFound("Topic not found");
 
-        }
+        TopicResponseDTO topicResponseDTO = topicService.getTopicbyName(userAuth, request.getTopic());
+        Topic topic = Topic.fromTopicResponseDTO(topicResponseDTO);
 
         Room room = Room.builder()
                 .name(request.getName())
                 .host(userAuth.getUsername())
-                .topic(request.getTopic())
+                .topic(topic)
                 .description(request.getDescription())
                 .participants(request.getParticipants())
                 .build();

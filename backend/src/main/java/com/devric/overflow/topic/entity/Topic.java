@@ -2,6 +2,7 @@ package com.devric.overflow.topic.entity;
 
 import com.devric.overflow.message.entity.Message;
 import com.devric.overflow.room.entity.Room;
+import com.devric.overflow.topic.dto.TopicResponseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -43,6 +44,18 @@ public class Topic {
     public void changeName(String name){
         this.name = name;
 
+    }
+    public static Topic fromTopicResponseDTO(TopicResponseDTO topicResponseDTO) {
+        Topic topic = new Topic();
+        topic.setId(topicResponseDTO.getId());
+        topic.setName(topicResponseDTO.getName());
+        return topic;
+    }
+    public void addRoom(Room room) {
+        if (room != null) {
+            rooms.add(room);
+            room.setTopic(this); // Set the back-reference in the Room entity
+        }
     }
 }
 

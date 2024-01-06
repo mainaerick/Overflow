@@ -36,10 +36,10 @@ public class TopicController {
         return topicService.getAll();
     }
 
-    @GetMapping("/{roomId}")
-    public TopicResponseDTO getTopic(@AuthenticationPrincipal UserAuth userAuth,@PathVariable long roomId) {
+    @GetMapping("/{topicName}")
+    public TopicResponseDTO getTopic(@AuthenticationPrincipal UserAuth userAuth,@PathVariable String topicName) {
 //        return roomService.getRoombyId(roomId);
-        return modelMapper.map(topicService.getTopicbyId(userAuth,roomId), TopicResponseDTO.class);
+        return modelMapper.map(topicService.getTopicbyName(userAuth,topicName), TopicResponseDTO.class);
 
     }
 

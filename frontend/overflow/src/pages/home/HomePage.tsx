@@ -13,7 +13,7 @@ const HomePage = (props: Props) => {
   <div className="container">
 
     {/* <!-- Topics Start --> */}
-    <Topics/>
+    <Topics />
 
     {/* <!-- Topics End --> */}
 
