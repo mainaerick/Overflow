@@ -11,11 +11,14 @@ import {
 import React from "react";
 import { toAbsoluteUrl } from "../../helpers";
 import { BellOutlined, UserOutlined } from "@ant-design/icons";
+import { useSelector, shallowEqual } from "react-redux";
+import { RootState } from "../../setup";
 
 type Props = {};
 const { Header, Content } = Layout;
 
 const HeaderNav = (props: Props) => {
+  let user: any = useSelector<RootState>(({ auth }) => auth.user, shallowEqual);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -28,7 +31,6 @@ const HeaderNav = (props: Props) => {
           <h1>Overflow</h1>
         </a>
 
-        hello
         <form className="header__search" method="GET" action="url 'home' ">
           <label>
             <svg
@@ -46,29 +48,36 @@ const HeaderNav = (props: Props) => {
         </form>
         <nav className="header__menu">
           {/* Logged In if request.user.is_authenticated */}
-          <div className="header__user">
-            <a href="url 'update-user' ">
-              <div className="avatar avatar--medium active">
-                <img src={"/media/images/avatar.svg"} />
-              </div>
-              <p>
-                {"request.user.username"}{" "}
-                <span>@{"request.user.username"}</span>
-              </p>
+          {user ? (
+            <div className="header__user">
+              <a href="updateuser">
+                <div className="avatar avatar--medium active">
+                  <img src={"/media/images/avatar.svg"} />
+                </div>
+                <p>
+                  {user.user.username} <span>@{user.user.username}</span>
+                </p>
+              </a>
+              <button className="dropdown-button">
+                <svg
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                >
+                  <title>chevron-down</title>
+                  <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
+                </svg>
+              </button>
+            </div>
+          ) : (
+            <a href="url 'login' ">
+              <img src={"/media/images/avatar.svg"} />
+              <p>Login</p>
             </a>
-            <button className="dropdown-button">
-              <svg
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-              >
-                <title>chevron-down</title>
-                <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
-              </svg>
-            </button>
-          </div>
+          )}
+
           {/* else Not Logged In */}
           {/* <a href="url 'login' ">
             <img src={"/media/images/avatar.svg"} />

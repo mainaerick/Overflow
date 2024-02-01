@@ -1,8 +1,8 @@
 package com.devric.overflow.message.service;
 
-import com.devric.overflow.core.auth.appuser.AppUser;
-import com.devric.overflow.core.auth.appuser.UserAuth;
-import com.devric.overflow.core.auth.appuser.UserRepository;
+import com.devric.overflow.core.auth.user.User;
+import com.devric.overflow.core.auth.user.UserName;
+import com.devric.overflow.core.auth.user.UserRepository;
 import com.devric.overflow.exception_handler.PropertyNotFound;
 import com.devric.overflow.message.dto.MessageRequest;
 import com.devric.overflow.message.dto.MessageResponseDTO;
@@ -24,12 +24,13 @@ import java.util.stream.Collectors;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final RoomRepository roomRepository;
+
     private final UserRepository userRepository;
 
-    public MessageResponseDTO addMessage(MessageRequest messageRequest, Long roomId, UserAuth userAuth) {
+    public MessageResponseDTO addMessage(MessageRequest messageRequest, Long roomId, User userAuth) {
         Room room = roomRepository.findById(roomId).get();
-        Set<AppUser> appUserSet = room.getParticipants();
-        AppUser appUser = userRepository.findById(userAuth.getId()).get();
+        Set<User> appUserSet = room.getParticipants();
+        User appUser = userRepository.findById(userAuth.getId()).get();
 
 //        add sender as participant if not available
 
@@ -63,14 +64,14 @@ public class MessageService {
                 .map(this::convertAllMessage)
                 .collect(Collectors.toList());
     }
-    public List<MessageResponseDTO> getMessagesAll(UserAuth userAuth) {
+    public List<MessageResponseDTO> getMessagesAll(User userAuth) {
         List<Message> messages = messageRepository.findAll();
         return messages.stream()
                 .map(this::convertAllMessage)
                 .collect(Collectors.toList());
     }
 
-    private MessageResponseDTO convertMessage(UserAuth userAuth, Message message) {
+    private MessageResponseDTO convertMessage(User userAuth, Message message) {
 
 //        ProfileResponse profile = profileService.getProfile(userAuth, userAuth.getUsername());
         return MessageResponseDTO.builder()
@@ -81,7 +82,7 @@ public class MessageService {
                 .body(message.getBody())
                 .host(MessageResponseDTO.AppUser.builder()
                         .id(message.getHost().getId())
-                        .username(userAuth.getUsername())
+                        .username(new UserName(userAuth.getName().toString()))
                         .build())
                 .build();
     }
@@ -96,7 +97,7 @@ public class MessageService {
                 .body(message.getBody())
                 .host(MessageResponseDTO.AppUser.builder()
                         .id(message.getHost().getId())
-                        .username(message.getHost().getUsername())
+                        .username(new UserName(message.getHost().getName().toString()))
                         .build())
                 .build();
     }

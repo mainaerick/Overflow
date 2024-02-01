@@ -8,11 +8,16 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   application:
-    name: customer
+    name: overflow
   datasource:
     password: 1234
     url: jdbc:postgresql://localhost:5432/overflow
     username: postgres
+  main:
+    allow-circular-references: true
+  logging:
+    level:
+      com.fasterxml.jackson: DEBUG
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -20,6 +25,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        show_sql: true
     show-sql: true
   mail:
     host: sandbox.smtp.mailtrap.io

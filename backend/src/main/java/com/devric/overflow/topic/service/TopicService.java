@@ -1,6 +1,6 @@
 package com.devric.overflow.topic.service;
 
-import com.devric.overflow.core.auth.appuser.UserAuth;
+import com.devric.overflow.core.auth.user.User;
 import com.devric.overflow.exception_handler.CustomException;
 import com.devric.overflow.exception_handler.PropertyNotFound;
 import com.devric.overflow.topic.dto.TopicRequest;
@@ -23,7 +23,7 @@ public class TopicService {
 
     private final TopicRepository topicRepository;
 
-    public void addTopic(UserAuth userAuth, TopicRequest request) {
+    public void addTopic(User userAuth, TopicRequest request) {
         if (null == userAuth) {
             throw new CustomException("Not Authorised", HttpStatus.FORBIDDEN);
         }
@@ -41,7 +41,7 @@ public class TopicService {
 
     }
 
-    public TopicResponseDTO getTopicbyName(UserAuth userAuth, String topicName) {
+    public TopicResponseDTO getTopicbyName(User userAuth, String topicName) {
         Topic topic = topicRepository.findTopicByName(topicName);
         if (null == userAuth) {
             throw new CustomException("Not Authorised", HttpStatus.FORBIDDEN);
@@ -58,7 +58,7 @@ public class TopicService {
     }
 
     @Transactional
-    public TopicResponseDTO updateTopic(UserAuth userAuth, Long id, TopicRequest topicRequest) {
+    public TopicResponseDTO updateTopic(User userAuth, Long id, TopicRequest topicRequest) {
         if (null == userAuth) {
             throw new CustomException("Not Authorised", HttpStatus.FORBIDDEN);
         }
@@ -73,7 +73,7 @@ public class TopicService {
         return convertTopic(userAuth, topic);
     }
 
-    public void deleteTopic(UserAuth userAuth, Long id) {
+    public void deleteTopic(User userAuth, Long id) {
         Topic topic = topicRepository.findById(id).get();
         try {
 //            check if user authenticated
@@ -89,7 +89,7 @@ public class TopicService {
 
     }
 
-    private TopicResponseDTO convertTopic(UserAuth userAuth, Topic topic) {
+    private TopicResponseDTO convertTopic(User userAuth, Topic topic) {
 //        ProfileResponse profile = profileService.getProfile(userAuth, userAuth.getUsername());
         return TopicResponseDTO.builder()
                 .id(topic.getId())

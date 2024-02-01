@@ -1,12 +1,9 @@
 package com.devric.overflow.room.service;
 
-import com.devric.overflow.core.auth.appuser.AppUser;
-import com.devric.overflow.core.auth.appuser.UserAuth;
-import com.devric.overflow.core.auth.appuser.UserRepository;
+import com.devric.overflow.core.auth.user.User;
+import com.devric.overflow.core.auth.user.UserRepository;
 import com.devric.overflow.exception_handler.CustomException;
 import com.devric.overflow.exception_handler.PropertyNotFound;
-import com.devric.overflow.message.dto.MessageResponseDTO;
-import com.devric.overflow.message.entity.Message;
 import com.devric.overflow.room.dto.RoomRequest;
 import com.devric.overflow.room.dto.RoomResponseDTO;
 import com.devric.overflow.room.dto.RoomUpdateRequest;
@@ -18,17 +15,14 @@ import com.devric.overflow.topic.repository.TopicRepository;
 import com.devric.overflow.topic.service.TopicService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.catalina.User;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 @Log4j2
 @Service
@@ -40,7 +34,7 @@ public class RoomService {
     private final TopicRepository topicRepository;
 
     private final  TopicService topicService;
-    public void addRoom(UserAuth userAuth,RoomRequest request) {
+    public void addRoom(User userAuth, RoomRequest request) {
 
         // Validate that the topic is provided in the request
         if (StringUtils.isEmpty(request.getTopic())) {
@@ -52,7 +46,7 @@ public class RoomService {
 
         Room room = Room.builder()
                 .name(request.getName())
-                .host(userAuth.getUsername())
+                .host(userAuth.getName().toString())
                 .topic(topic)
                 .description(request.getDescription())
                 .participants(request.getParticipants())
@@ -60,7 +54,7 @@ public class RoomService {
         roomRepository.saveAndFlush(room);
     }
     @Transactional
-    public RoomResponseDTO updateRoom(UserAuth userAuth, Long id, RoomUpdateRequest roomRequest){
+    public RoomResponseDTO updateRoom(User userAuth, Long id, RoomUpdateRequest roomRequest){
         Room room = roomRepository.findById(id).get();
         if (room == null){
             throw new PropertyNotFound("Room not found");
@@ -88,9 +82,9 @@ public class RoomService {
     }
     public Room addUserToRoom(Long roomId,Long userId){
         Room room = roomRepository.findById(roomId).get();
-        Set<AppUser> appUserSet =room.getParticipants();
+        Set<User> appUserSet =room.getParticipants();
 
-        AppUser appUser = userRepository.findById(userId).get();
+        User appUser = userRepository.findById(userId).get();
         if (room == null){
             throw new PropertyNotFound("Room not found");
         }
@@ -118,11 +112,10 @@ public class RoomService {
         return room;
     }
 
-    public void deleteRoom(UserAuth userAuth, Long id) {
+    public void deleteRoom(User userAuth, Long id) {
         Room room = roomRepository.findById(id).get();
-        log.warn("auth details---->"+room.getHost()+"--"+userAuth.getUsername());
         try{
-            if (room.getHost().equals(userAuth.getUsername())) {
+            if (room.getHost().equals(userAuth.getName())) {
                 room.getParticipants().clear();
 //                room.getMessages().clear();
                 roomRepository.delete(room);
@@ -139,14 +132,14 @@ public class RoomService {
 
     }
 
-    private RoomResponseDTO convertRoom(UserAuth userAuth, Room room) {
+    private RoomResponseDTO convertRoom(User userAuth, Room room) {
 
 //        ProfileResponse profile = profileService.getProfile(userAuth, userAuth.getUsername());
         return RoomResponseDTO.builder()
                 .id(room.getId())
                 .created(room.getCreated())
                 .updated(room.getUpdated())
-                .host(userAuth.getUsername())
+                .host(userAuth.getName().toString())
                 .name(room.getName())
                 .topic(room.getTopic())
                 .participants(room.getParticipants())

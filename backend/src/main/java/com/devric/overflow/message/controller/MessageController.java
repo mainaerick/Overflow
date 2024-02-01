@@ -1,6 +1,6 @@
 package com.devric.overflow.message.controller;
 
-import com.devric.overflow.core.auth.appuser.UserAuth;
+import com.devric.overflow.core.auth.user.User;
 import com.devric.overflow.message.dto.MessageDTO;
 import com.devric.overflow.message.dto.MessageRequest;
 import com.devric.overflow.message.dto.MessageResponseDTO;
@@ -24,11 +24,11 @@ public class MessageController {
     private final MessageService messageService;
 
     @PutMapping("/room/{roomId}")
-    MessageResponseDTO addMessageToRoom(@PathVariable Long roomId, @RequestBody MessageRequest messageRequest,@AuthenticationPrincipal UserAuth userAuth) {
+    MessageResponseDTO addMessageToRoom(@PathVariable Long roomId, @RequestBody MessageRequest messageRequest,@AuthenticationPrincipal User userAuth) {
         return messageService.addMessage(messageRequest,roomId,userAuth);
     }
     @GetMapping("/all")
-    List<MessageResponseDTO> getMessagesInRoom(@AuthenticationPrincipal UserAuth userAuth) {
+    List<MessageResponseDTO> getMessagesInRoom(@AuthenticationPrincipal User userAuth) {
         return messageService.getMessagesAll(userAuth);
     }
     @GetMapping("/room/{roomId}")

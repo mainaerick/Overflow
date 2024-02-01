@@ -22,10 +22,11 @@ import { ErrorsPage } from "../features/errors/ErrorsPage";
  */
 const { PUBLIC_URL } = process.env;
 const AppRoutes: FC = () => {
-  let isAuthorized = useSelector<RootState>(
+  let isAuthorized:any = useSelector<RootState>(
     ({ auth }) => auth.user,
     shallowEqual
   );
+  const username = isAuthorized?.user.username
   // isAuthorized = true
   return (
     <BrowserRouter>

@@ -1,4 +1,4 @@
-package com.devric.overflow.core.auth.appuser;
+package com.devric.overflow.core.auth.user;
 
 import org.springframework.security.core.GrantedAuthority;
 

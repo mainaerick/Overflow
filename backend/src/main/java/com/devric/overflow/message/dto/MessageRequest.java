@@ -1,6 +1,6 @@
 package com.devric.overflow.message.dto;
 
-import com.devric.overflow.core.auth.appuser.AppUser;
+import com.devric.overflow.core.auth.user.User;
 import com.devric.overflow.room.entity.Room;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class MessageRequest {
     @ApiModelProperty(position = 0)
     private Integer id;
     @ApiModelProperty(position = 1)
-    private AppUser host;
+    private User host;
     @ApiModelProperty(position = 2)
     private Room room;
     @ApiModelProperty(position = 3)

@@ -1,7 +1,6 @@
 package com.devric.overflow.message.dto;
 
-import com.devric.overflow.core.auth.appuser.AppUser;
-import com.devric.overflow.room.entity.Room;
+import com.devric.overflow.core.auth.user.UserName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +30,7 @@ public class MessageResponseDTO {
     @Getter
     public static class AppUser{
         private Long id;
-        private String username;
+        private UserName username;
     }
     @Builder
     @Getter

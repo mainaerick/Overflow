@@ -27,10 +27,9 @@ const Login = (props: Props) => {
     setTimeout(() => {
       login(values.username, values.password)
         .then((response) => {
-          console.log(response);
 
-          const token = response.data;
-          console.log(token);
+          const token = response.data.user.token;
+          // console.log(token.user.token);
           setLoadings([false]);
           dispatch(auth.actions.login(token));
         })

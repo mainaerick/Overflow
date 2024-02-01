@@ -1,7 +1,7 @@
 package com.devric.overflow.room.dto;
 
-import com.devric.overflow.core.auth.appuser.AppUser;
-import com.devric.overflow.topic.entity.Topic;
+
+import com.devric.overflow.core.auth.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +20,6 @@ public class RoomRequest {
     private String topic;
     private String name;
     private String description;
-    private Set<AppUser> participants;
+    private Set<User> participants;
 
 }

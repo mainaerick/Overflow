@@ -9,7 +9,6 @@ interface RegistrationValues {
     username: string,
   email: string,
   password: string,
-  appUserRoles: [string]
   }
 const Registration = (props: Props) => {
     type LayoutType = Parameters<typeof Form>[0]["layout"];
@@ -22,9 +21,9 @@ const Registration = (props: Props) => {
     setLoadings([true]);
     
     setTimeout(() => {
-      register(values.username,values.email,values.password,["ROLE_CLIENT"])
+      register(values.username,values.email,values.password)
         .then((response) => {
-          const token = response.data;
+          const token = response.data.user.token;
           console.log(token);
           setLoadings([false]);
           dispatch(auth.actions.register(token));
@@ -53,21 +52,7 @@ const Registration = (props: Props) => {
           onFinish={onFinish}
           style={{ width: 400 }}
         >
-            <div className="form__group form__group">
-              <label htmlFor="room_name">Name</label>
-
-              <Form.Item
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your name!",
-                  },
-                ]}
-              >
-                <Input id="id_name" />
-              </Form.Item>
-            </div>
+           
             <div className="form__group form__group">
               <label htmlFor="room_name">Username</label>
 

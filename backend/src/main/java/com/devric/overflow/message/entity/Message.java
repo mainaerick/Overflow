@@ -1,6 +1,6 @@
 package com.devric.overflow.message.entity;
 
-import com.devric.overflow.core.auth.appuser.AppUser;
+import com.devric.overflow.core.auth.user.User;
 import com.devric.overflow.room.entity.Room;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -27,7 +27,7 @@ public class Message {
     private Long id;
 
     @ManyToOne
-    private AppUser host;
+    private User host;
 
     @ManyToOne
     private Room room;

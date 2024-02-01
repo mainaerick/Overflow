@@ -1,7 +1,6 @@
 package com.devric.overflow.room.dto;
 
-import com.devric.overflow.core.auth.appuser.AppUser;
-import com.devric.overflow.core.auth.appuser.UserAuth;
+import com.devric.overflow.core.auth.user.User;
 import com.devric.overflow.topic.entity.Topic;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -28,7 +27,7 @@ public class RoomResponseDTO {
     @ApiModelProperty(position = 4)
     private String description;
     @ApiModelProperty(position = 5)
-    public Set<AppUser> participants;
+    public Set<User> participants;
 
     @ApiModelProperty(position = 6)
     private Instant updated;
@@ -36,7 +35,7 @@ public class RoomResponseDTO {
     private  Instant created;
 
     public RoomResponseDTO(Long id, String host, Topic topic, String name, String description,
-                           Set<AppUser> participants, Instant updated, Instant created) {
+                           Set<User> participants, Instant updated, Instant created) {
         this.id = id;
         this.host = host;
         this.topic = topic;

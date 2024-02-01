@@ -1,11 +1,6 @@
 package com.devric.overflow.topic.controller;
 
-import com.devric.overflow.core.auth.appuser.UserAuth;
-import com.devric.overflow.room.dto.RoomRequest;
-import com.devric.overflow.room.dto.RoomResponseDTO;
-import com.devric.overflow.room.dto.RoomUpdateRequest;
-import com.devric.overflow.room.entity.Room;
-import com.devric.overflow.room.service.RoomService;
+import com.devric.overflow.core.auth.user.User;
 import com.devric.overflow.topic.dto.TopicRequest;
 import com.devric.overflow.topic.dto.TopicResponseDTO;
 import com.devric.overflow.topic.service.TopicService;
@@ -27,7 +22,7 @@ public class TopicController {
     private final ModelMapper modelMapper;
 
     @PostMapping
-    public void addTopic(@AuthenticationPrincipal UserAuth userAuth, @RequestBody TopicRequest topicRequest) {
+    public void addTopic(@AuthenticationPrincipal User userAuth, @RequestBody TopicRequest topicRequest) {
         topicService.addTopic(userAuth,topicRequest);
     }
 
@@ -37,20 +32,20 @@ public class TopicController {
     }
 
     @GetMapping("/{topicName}")
-    public TopicResponseDTO getTopic(@AuthenticationPrincipal UserAuth userAuth,@PathVariable String topicName) {
+    public TopicResponseDTO getTopic(@AuthenticationPrincipal User userAuth,@PathVariable String topicName) {
 //        return roomService.getRoombyId(roomId);
         return modelMapper.map(topicService.getTopicbyName(userAuth,topicName), TopicResponseDTO.class);
 
     }
 
     @PutMapping("/update/{topicId}")
-    public TopicResponseDTO updateTopic(@AuthenticationPrincipal UserAuth userAuth,@PathVariable long topicId,@RequestBody TopicRequest topicRequest){
+    public TopicResponseDTO updateTopic(@AuthenticationPrincipal User userAuth,@PathVariable long topicId,@RequestBody TopicRequest topicRequest){
 
         return topicService.updateTopic(userAuth,topicId,topicRequest);
     }
 
     @DeleteMapping("/delete/{topicId}")
-    public void deleteTopic(@AuthenticationPrincipal UserAuth userAuth,@PathVariable long topicId){
+    public void deleteTopic(@AuthenticationPrincipal User userAuth,@PathVariable long topicId){
         topicService.deleteTopic(userAuth,topicId);
     }
 

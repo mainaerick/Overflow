@@ -1,6 +1,5 @@
 package com.devric.overflow.room.dto;
 
-import com.devric.overflow.core.auth.appuser.UserResponseDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
