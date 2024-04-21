@@ -42,3 +42,30 @@ To deploy Overflow using Docker Compose, follow these steps:
    docker-compose up -d
 5. **Access the Application:**
    Once all services are running, you can access the Overflow application at http://localhost:8080. PgAdmin is accessible at http://localhost:5050 for database management.
+
+
+## Swagger Configuration
+
+This application utilizes Swagger for API documentation and testing. The Swagger configuration is defined in the `SwaggerConfig` class.
+
+### Configuration Details
+
+The `SwaggerConfig` class is annotated with `@Configuration` and `@EnableSwagger2`, enabling Swagger support for the application.
+
+### API Documentation
+
+Swagger is configured to generate API documentation based on the controllers and endpoints in the application. The `api()` method in the `SwaggerConfig` class creates a `Docket` bean that configures Swagger settings such as API selectors, API information, security schemes, and context.
+
+### Security Configuration
+
+Security is integrated with Swagger to handle authorization. The configuration includes defining a security context, security schemes, and setting up security references for API endpoints.
+
+### Additional Features
+
+- The `metadata()` method configures metadata for the API documentation, including title, description, version, license information, and contact details.
+- The `apiKey()` method sets up an API key for authorization.
+- The `discoverers()` method configures link discoverers for the API.
+
+### Usage
+
+Once the application is running, you can access the Swagger UI to explore and test the APIs. Typically, the Swagger UI is available at `http://localhost:8080/swagger-ui.html`.
